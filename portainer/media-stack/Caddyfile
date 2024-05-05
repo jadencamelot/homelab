@@ -1,0 +1,35 @@
+{
+    # Empty global options block
+}
+
+portainer.home.arpa {
+    # This doesn't work yet, need to figure out docker networking properly
+    # reverse_proxy portainer:9443
+
+    # For now, just redirect to the right port
+    redir https://portainer.home.arpa:9443{uri}
+}
+
+prowlarr.home.arpa {
+    reverse_proxy prowlarr:9696
+}
+
+radarr.home.arpa {
+    reverse_proxy radarr:7878
+}
+
+sonarr.home.arpa {
+    reverse_proxy sonarr:8989
+}
+
+qbittorrent.home.arpa {
+    reverse_proxy qbittorrent:8080
+}
+
+jellyfin.home.arpa {
+    reverse_proxy jellyfin:8096
+}
+
+jellyseerr.home.arpa {
+    reverse_proxy jellyseerr:5055
+}
