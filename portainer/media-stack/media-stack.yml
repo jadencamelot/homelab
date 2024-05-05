@@ -1,0 +1,142 @@
+---
+services:
+  caddy:
+    image: caddy
+    container_name: caddy
+    restart: unless-stopped
+    #TODO
+    # environment:
+      # DOMAIN: https://localhost
+      # EMAIL: mail@mail.com
+      # LOG_FILE: /caddy/access.log
+    ports:
+      - 80:80  # Needed for the ACME HTTP-01 challenge.
+      - 443:443
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${SERVER_PATH_CONFIG}/caddy/config:/config
+      - ${SERVER_PATH_CONFIG}/caddy/data:/data
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    restart: unless-stopped
+    environment:
+      - JELLYFIN_PublishedServerUrl=${EXTERNAL_URL_JELLYFIN}
+      - TZ=${SERVER_TIMEZONE}
+    ports:
+      - "${JELLYFIN_WEBUI_PORT}:8096"
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/jellyfin/config:/config
+      - ${SERVER_PATH_CACHE}/jellyfin:/cache
+      - type: bind
+        source: ${SERVER_PATH_DATA}/media
+        target: /data/media
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr
+    container_name: jellyseerr
+    restart: unless-stopped
+    environment:
+      - TZ=${SERVER_TIMEZONE}
+    ports:
+      - "${JELLYSEERR_WEBUI_PORT}:5055"
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/jellyseerr:/app/config
+
+  prowlarr:
+    image: linuxserver/prowlarr
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+    ports:
+      - "${PROWLARR_WEBUI_PORT}:9696"
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/prowlarr:/config
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+    ports:
+      - "${RADARR_WEBUI_PORT}:7878"
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/radarr:/config
+      - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+    ports:
+      - "${SONARR_WEBUI_PORT}:8989"
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/sonarr:/config
+      - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
+
+# TODO - Add Tailscale networking
+  # tailscale:
+  #   image: tailscale/tailscale
+  #   container_name: tailscale
+  #   restart: always
+  #   privileged: true
+  #   cap_add:
+  #     - NET_ADMIN
+  #     - SYS_ADMIN
+  #   devices:
+  #     - /dev/net/tun
+  #   environment:
+  #     - TAILSCALE_AUTHKEY=${TAILSCALE_AUTHKEY}
+  #     - TZ=${SERVER_TIMEZONE}
+
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - QBT_WEBUI_PORT=${QBT_WEBUI_PORT}
+      - TORRENTING_PORT=6681
+      - TZ=${SERVER_TIMEZONE}
+    ports:
+      - "6881:6881/tcp"  # For bittorrent traffic
+      - "6881:6881/udp"  # For bittorrent traffic
+      - ${QBT_WEBUI_PORT}:${QBT_WEBUI_PORT}/tcp  # For Web UI
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/qbittorrent:/config
+      - ${SERVER_PATH_DATA}/torrents:/data/torrents
+      - ${SERVER_PATH_DATA}/media:/data/media
+    stop_grace_period: 30m
+    tmpfs:
+      - /tmp
+    tty: true
+
+networks:
+  media_stack:
+    driver: bridge
