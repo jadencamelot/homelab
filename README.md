@@ -27,7 +27,7 @@ In no particular order:
 - [ ] Expose containers to Tailnet. TBD - single Tailscale instance for whole cluster (ports for different services) or one per service (allows subdomains)
 - [ ] Gluetun in containers (currently done at pfsense layer)
 - [ ] Figure out something for NAS layer
-- [ ] PCIe passthrough iGPU from Proxmox Host -> Ubuntu -> Jellyfin container, for transcoding
+- [x] PCIe passthrough iGPU from Proxmox Host -> Ubuntu -> Jellyfin container, for transcoding
 - [ ] Move to NixOS instead of Ubuntu
 - [ ] Add more RAM to host PC
 - [ ] Set up auto offsite backups

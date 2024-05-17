@@ -21,8 +21,12 @@ services:
 
   jellyfin:
     image: jellyfin/jellyfin
+    group_add:
+      - ${GID_RENDER}  # render (on host)
     container_name: jellyfin
     restart: unless-stopped
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128  # Use GPU for encoding
     environment:
       - JELLYFIN_PublishedServerUrl=${EXTERNAL_URL_JELLYFIN}
       - TZ=${SERVER_TIMEZONE}
