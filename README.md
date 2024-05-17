@@ -22,9 +22,9 @@ Configuration and personal documentation for my homelab - (eternal) WIP
 
 In no particular order:
 
-- [ ] Auto provision Tailscale TLS certificates (valid only for the tailnet) via MagicDNS
-- [ ] Set up Caddy to consume Tailscale certs, and close off container ports (i.e. web UIs only accessible via Caddy)
-- [ ] Expose containers to Tailnet. TBD - single Tailscale instance for whole cluster (ports for different services) or one per service (allows subdomains)
+- [x] Auto provision TLS certificates via Caddy
+- [ ] Close off container ports (i.e. web UIs only accessible via Caddy)
+- [x] Expose containers to Tailnet. ✅ Single Tailscale instance for whole cluster (~~ports~~ **subdomains** for different services) ~~or one per service (allows subdomains)~~
 - [ ] Gluetun in containers (currently done at pfsense layer)
 - [ ] Figure out something for NAS layer
 - [x] PCIe passthrough iGPU from Proxmox Host -> Ubuntu -> Jellyfin container, for transcoding

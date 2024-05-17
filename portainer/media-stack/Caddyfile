@@ -33,3 +33,33 @@ jellyfin.home.arpa {
 jellyseerr.home.arpa {
     reverse_proxy jellyseerr:5055
 }
+
+# Must use wildcard certificate for sub-subdomains of DuckDNS, because these
+#   custom subdomains don't have their own DNS record and therefore fail the
+#   ACME DNS-01 challenge
+*.{$DOMAIN} {
+    tls {
+        dns duckdns {env.DUCKDNS_API_TOKEN}
+    }
+
+    @jellyfin     host jellyfin.{$DOMAIN}
+    @jellyseerr   host jellyseerr.{$DOMAIN}
+    @prowlarr     host prowlarr.{$DOMAIN}
+    @radarr       host radarr.{$DOMAIN}
+    @sonarr       host sonarr.{$DOMAIN}
+    @qbittorrent  host qbittorrent.{$DOMAIN}
+
+    reverse_proxy @jellyfin    jellyfin:8096
+    reverse_proxy @jellyseerr  jellyseerr:5055
+    reverse_proxy @prowlarr    prowlarr:9696
+    reverse_proxy @radarr      radarr:7878
+    reverse_proxy @sonarr      sonarr:8989
+    reverse_proxy @qbittorrent qbittorrent:8080
+
+    # Auto redirect common typos
+    @typo_jellyseerr host jellyseer.{$DOMAIN}
+    @typo_qbittorrent host qbitorent.{$DOMAIN} qbitorrent.{$DOMAIN} qbittorent.{$DOMAIN}
+
+    redir @typo_jellyseerr  https://jellyseerr.{$DOMAIN}
+    redir @typo_qbittorrent https://qbittorrent.{$DOMAIN}
+}

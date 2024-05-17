@@ -1,16 +1,21 @@
 ---
 services:
   caddy:
-    image: caddy
+    # Third party caddy image. Uses `xcaddy` to add module `dns.providers.duckdns`
+    # https://github.com/serfriz/caddy-custom-builds/tree/main/caddy-duckdns
+    # https://github.com/caddy-dns/duckdns
+    # TODO - make my own Dockerfile to remove dependency on a random repo
+    image: serfriz/caddy-duckdns
     container_name: caddy
     restart: unless-stopped
     #TODO
-    # environment:
-      # DOMAIN: https://localhost
+    environment:
+      DOMAIN: ${DOMAIN}
+      DUCKDNS_API_TOKEN: ${DUCKDNS_API_TOKEN}
       # EMAIL: mail@mail.com
       # LOG_FILE: /caddy/access.log
     ports:
-      - 80:80  # Needed for the ACME HTTP-01 challenge.
+      - 80:80
       - 443:443
     networks:
       - media_stack
