@@ -32,6 +32,10 @@ In no particular order:
 - [ ] Add more RAM to host PC
 - [ ] Set up auto offsite backups
 - [ ] Automate deployment from scratch (Ansible? Nix?)
+- [ ] Add automated speed test tool (for periodically testing WAN speed through ISP)
+- [ ] Add self-hosted web-based speed test (for testing a client device's connection speed to the homelab, e.g. via Tailscale)
+- [ ] Add Unifi network controller (for configuring local wifi access points, etc)
+- [ ] Set up PiHole for DNS
 
 _**Note:** I don't have a domain name and don't (currently) plan to purchase one, which adds some additional hoops to jump through (e.g. provisioning valid TLS certificates becomes slightly more difficult than just Caddy + Let's Encrypt)_
 
