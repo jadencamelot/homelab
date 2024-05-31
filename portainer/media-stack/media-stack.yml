@@ -106,6 +106,23 @@ services:
       - ${SERVER_PATH_CONFIG}/sonarr:/config
       - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
 
+  speedtest-tracker:
+    image: linuxserver/speedtest-tracker
+    container_name: speedtest-tracker
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+      - DB_CONNECTION=sqlite
+      - PUBLIC_DASHBOARD=true
+    ports:
+      - 8041:80
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/speedtest-tracker:/config
+
   librespeed:
     container_name: librespeed
     image: ghcr.io/librespeed/speedtest:latest

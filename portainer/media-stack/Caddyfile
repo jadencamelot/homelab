@@ -59,7 +59,12 @@ jellyseerr.home.arpa {
 
     # Network services
     @librespeed         host speedtest.{$DOMAIN}
+    @speedtest-tracker  host speedtest-tracker.{$DOMAIN}
+    # @unifi              host unifi.{$DOMAIN}
+
     reverse_proxy @librespeed         librespeed:80
+    reverse_proxy @speedtest-tracker  speedtest-tracker:80
+    # reverse_proxy @unifi              unifi:80
 
     # Auto redirect common typos
     @typo_jellyseerr host jellyseer.{$DOMAIN}
