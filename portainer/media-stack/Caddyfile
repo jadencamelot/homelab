@@ -57,6 +57,17 @@ jellyseerr.home.arpa {
     reverse_proxy @sonarr      sonarr:8989
     reverse_proxy @qbittorrent qbittorrent:8080
 
+    # Alternate WebUI for qBittorrent - static files
+    # TODO - this doesn't work as expected, need to debug
+    @iqbit        host iqbit.{$DOMAIN}
+    route @iqbit {
+        reverse_proxy /api qbittorrent:8080
+        # reverse_proxy /static qbittorrent:8080
+        file_server {
+            root /www/iQbit/release/public
+        }
+    }
+
     # Network services
     @librespeed         host speedtest.{$DOMAIN}
     @speedtest-tracker  host speedtest-tracker.{$DOMAIN}
