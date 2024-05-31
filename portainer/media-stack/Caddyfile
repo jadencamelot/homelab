@@ -42,6 +42,7 @@ jellyseerr.home.arpa {
         dns duckdns {env.DUCKDNS_API_TOKEN}
     }
 
+    # Media services
     @jellyfin     host jellyfin.{$DOMAIN}
     @jellyseerr   host jellyseerr.{$DOMAIN}
     @prowlarr     host prowlarr.{$DOMAIN}
@@ -55,6 +56,10 @@ jellyseerr.home.arpa {
     reverse_proxy @radarr      radarr:7878
     reverse_proxy @sonarr      sonarr:8989
     reverse_proxy @qbittorrent qbittorrent:8080
+
+    # Network services
+    @librespeed         host speedtest.{$DOMAIN}
+    reverse_proxy @librespeed         librespeed:80
 
     # Auto redirect common typos
     @typo_jellyseerr host jellyseer.{$DOMAIN}

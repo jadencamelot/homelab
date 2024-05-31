@@ -106,6 +106,20 @@ services:
       - ${SERVER_PATH_CONFIG}/sonarr:/config
       - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
 
+  librespeed:
+    container_name: librespeed
+    image: ghcr.io/librespeed/speedtest:latest
+    restart: unless-stopped
+    environment:
+      - MODE=standalone
+      - DB_TYPE=sqlite
+    ports:
+      - 8042:80
+    networks:
+      - media_stack
+    volumes:
+      - ${SERVER_PATH_CONFIG}/librespeed:/database
+
 # TODO - Add Tailscale networking
   # tailscale:
   #   image: tailscale/tailscale
