@@ -107,6 +107,20 @@ services:
       - ${SERVER_PATH_CONFIG}/sonarr:/config
       - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
 
+  flaresolverr:
+    image: flaresolverr/flaresolverr
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${SERVER_TIMEZONE}
+    ports:
+      - "8191:8191"
+    networks:
+      - media_stack
+    restart: unless-stopped
+
   speedtest-tracker:
     image: linuxserver/speedtest-tracker
     container_name: speedtest-tracker
