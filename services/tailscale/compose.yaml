@@ -1,0 +1,16 @@
+---
+# TODO - Add Tailscale networking
+# services:
+  # tailscale:
+  #   image: tailscale/tailscale
+  #   container_name: tailscale
+  #   restart: always
+  #   privileged: true
+  #   cap_add:
+  #     - NET_ADMIN
+  #     - SYS_ADMIN
+  #   devices:
+  #     - /dev/net/tun
+  #   environment:
+  #     - TAILSCALE_AUTHKEY=${TAILSCALE_AUTHKEY}
+  #     - TZ=${SERVER_TIMEZONE}

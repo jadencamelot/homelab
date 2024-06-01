@@ -1,0 +1,69 @@
+---
+name: downloadarr
+services:
+  flaresolverr:
+    image: flaresolverr/flaresolverr
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${SERVER_TIMEZONE}
+    restart: unless-stopped
+
+  prowlarr:
+    image: linuxserver/prowlarr
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+    volumes:
+      - ${SERVER_PATH_CONFIG}/prowlarr:/config
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+    volumes:
+      - ${SERVER_PATH_CONFIG}/radarr:/config
+      - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+    volumes:
+      - ${SERVER_PATH_CONFIG}/sonarr:/config
+      - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
+
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - QBT_WEBUI_PORT=${QBT_WEBUI_PORT}
+      - TORRENTING_PORT=6681
+      - TZ=${SERVER_TIMEZONE}
+    ports:
+      - "6881:6881/tcp"  # For bittorrent traffic
+      - "6881:6881/udp"  # For bittorrent traffic
+    volumes:
+      - ${SERVER_PATH_CONFIG}/qbittorrent:/config
+      - ${SERVER_PATH_DATA}/torrents:/data/torrents
+      - ${SERVER_PATH_DATA}/media:/data/media
+    stop_grace_period: 30m
+    tmpfs:
+      - /tmp
+    tty: true  # TODO - is this really needed?

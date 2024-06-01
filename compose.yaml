@@ -1,0 +1,19 @@
+# Global "top-level" compose file.
+# Imports all compose files for individual services.
+#
+# This structure allows for global variables in the top-level .env to be
+# consumed by each service, while still having separation of services into
+# distinct compose.yaml files.
+---
+name: homelab
+include:
+  - path: services/caddy/compose.yaml
+  - path: services/downloadarr/compose.yaml
+  - path: services/jellyfin/compose.yaml
+  - path: services/portainer/compose.yaml
+  - path: services/speedtest/compose.yaml
+  # - path: services/tailscale/compose.yaml
+  # - path: services/unifi/compose.yaml
+
+# networks:
+  # TODO

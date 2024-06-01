@@ -1,0 +1,20 @@
+---
+name: caddy
+services:
+  caddy:
+    # Third party caddy image. Uses `xcaddy` to add module `dns.providers.duckdns`
+    # https://github.com/serfriz/caddy-custom-builds/tree/main/caddy-duckdns
+    # https://github.com/caddy-dns/duckdns
+    # TODO - make my own Dockerfile to remove dependency on a random repo
+    image: serfriz/caddy-duckdns
+    container_name: caddy
+    restart: unless-stopped
+    env_file:
+      - ./secrets.env
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${SERVER_PATH_CONFIG}/caddy/config:/config
+      - ${SERVER_PATH_CONFIG}/caddy/data:/data

@@ -1,2 +1,2 @@
-.env.local
-.env.secrets
+local.env
+secrets.env

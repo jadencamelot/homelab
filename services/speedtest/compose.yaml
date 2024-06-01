@@ -1,0 +1,25 @@
+---
+name: speedtest
+services:
+  speedtest-tracker:
+    image: linuxserver/speedtest-tracker
+    container_name: speedtest-tracker
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+      - DB_CONNECTION=sqlite
+      - PUBLIC_DASHBOARD=true
+    volumes:
+      - ${SERVER_PATH_CONFIG}/speedtest-tracker:/config
+
+  librespeed:
+    container_name: librespeed
+    image: ghcr.io/librespeed/speedtest:latest
+    restart: unless-stopped
+    environment:
+      - MODE=standalone
+      - DB_TYPE=sqlite
+    volumes:
+      - ${SERVER_PATH_CONFIG}/librespeed:/database
