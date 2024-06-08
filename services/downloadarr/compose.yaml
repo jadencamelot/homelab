@@ -56,6 +56,8 @@ services:
       - QBT_WEBUI_PORT=${QBT_WEBUI_PORT}
       - TORRENTING_PORT=6681
       - TZ=${SERVER_TIMEZONE}
+    env_file:
+      - ./secrets.env
     ports:
       - "6881:6881/tcp"  # For bittorrent traffic
       - "6881:6881/udp"  # For bittorrent traffic
@@ -63,6 +65,10 @@ services:
       - ${SERVER_PATH_CONFIG}/qbittorrent:/config
       - ${SERVER_PATH_DATA}/torrents:/data/torrents
       - ${SERVER_PATH_DATA}/media:/data/media
+      - type: bind
+        read_only: true
+        source: ${SERVER_PATH_SCRIPTS}/qbittorrent
+        target: /scripts
     stop_grace_period: 30m
     tmpfs:
       - /tmp
