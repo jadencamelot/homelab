@@ -10,7 +10,7 @@ include:
   - path: services/caddy/compose.yaml
   - path: services/downloadarr/compose.yaml
   - path: services/jellyfin/compose.yaml
-  - path: services/portainer/compose.yaml
+  # - path: services/portainer/compose.yaml
   - path: services/speedtest/compose.yaml
   # - path: services/tailscale/compose.yaml
   # - path: services/unifi/compose.yaml
