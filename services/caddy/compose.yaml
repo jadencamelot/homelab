@@ -18,3 +18,4 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ${SERVER_PATH_CONFIG}/caddy/config:/config
       - ${SERVER_PATH_CONFIG}/caddy/data:/data
+      - ${SERVER_PATH_CONFIG}/caddy/static:/www:ro

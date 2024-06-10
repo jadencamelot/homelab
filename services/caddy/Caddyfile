@@ -26,7 +26,9 @@ qbittorrent.home.arpa {
     reverse_proxy qbittorrent:8080
 }
 
-jellyfin.home.arpa {
+# Temporarily allow IP:8096 for local network to get around DNS issues on guest network over VPN
+# TODO - remove this once fixed properly
+:8096 jellyfin.home.arpa {
     reverse_proxy jellyfin:8096
 }
 
@@ -58,11 +60,9 @@ jellyseerr.home.arpa {
     reverse_proxy @qbittorrent qbittorrent:8080
 
     # Alternate WebUI for qBittorrent - static files
-    # TODO - this doesn't work as expected, need to debug
     @iqbit        host iqbit.{$DOMAIN}
     route @iqbit {
-        reverse_proxy /api qbittorrent:8080
-        # reverse_proxy /static qbittorrent:8080
+        reverse_proxy /api/* qbittorrent:8080
         file_server {
             root /www/iQbit/release/public
         }
