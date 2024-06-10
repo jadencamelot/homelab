@@ -47,6 +47,7 @@ jellyseerr.home.arpa {
     # Media services
     @jellyfin     host jellyfin.{$DOMAIN}
     @jellyseerr   host jellyseerr.{$DOMAIN}
+    @bazarr       host bazarr.{$DOMAIN}
     @prowlarr     host prowlarr.{$DOMAIN}
     @radarr       host radarr.{$DOMAIN}
     @sonarr       host sonarr.{$DOMAIN}
@@ -55,11 +56,12 @@ jellyseerr.home.arpa {
 
     reverse_proxy @jellyfin    jellyfin:8096
     reverse_proxy @jellyseerr  jellyseerr:5055
+    reverse_proxy @radarr      radarr:6767
     reverse_proxy @prowlarr    prowlarr:9696
     reverse_proxy @radarr      radarr:7878
     reverse_proxy @sonarr      sonarr:8989
     reverse_proxy @qbittorrent qbittorrent:8080
-    reverse_proxy @metube      metube:8081
+    reverse_proxy @metube      metube:8081    
 
     # Alternate WebUI for qBittorrent - static files
     @iqbit        host iqbit.{$DOMAIN}
