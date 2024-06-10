@@ -67,8 +67,8 @@ END
   exit 0
 fi
 
-# Convert bytes to human readable range
-readonly torrent_size_h="$(numfmt --to=iec-i "${torrent_size:=0}")"
+# Convert bytes to human readable range, 2 decimal places
+readonly torrent_size_h="$(numfmt --to=iec-i --format=%.2f "${torrent_size:=0}")B"
 
 # Preference order for values that overlap
 readonly torrent_path="${torrent_path_save:-${torrent_path_content:-${torrent_path_root}}}"
@@ -77,21 +77,20 @@ readonly torrent_hash="${torrent_hash_id:-${torrent_hash_v2:-${torrent_hash_v1}}
 # Construct notification message & title
 case "${action}" in
   added)
-    title="New Torrent Added"
-    message="<b>⏳ Downloading</b> ${torrent_name}
+    title="Download Started"
+    message="<b>⏳ ${torrent_name}</b>
 
-<b>Folder:</b> ${torrent_path_save}
+<b>Folder:</b> <i>${torrent_path_save}</i>
 <b>Category:</b> ${torrent_category}
 ${torrent_tags:+"(<b>Tags:</b> ${torrent_tags})"}"
     ;;
   finished)
     title="Download Complete"
-    message="<b>✅ Completed</b> ${torrent_name}
+    message="<b>✅ ${torrent_name}</b>
 
-<b>Folder:</b> ${torrent_path_content}
-<b>Size:</b> ${torrent_size_h}B (${torrent_numfiles:-??} files)
-<b>Tracker:</b> ${torrent_tracker}
-
+<b>Size:</b> ${torrent_size_h} (${torrent_numfiles:-??} files)
+<b>Folder:</b> <i>${torrent_path_content}</i>
+<b>Tracker:</b> <i>${torrent_tracker}</i>
 <b>Category:</b> ${torrent_category}
 ${torrent_tags:+"(<b>Tags:</b> ${torrent_tags})"}"
     ;;
