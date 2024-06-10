@@ -6,3 +6,10 @@ services:
     restart: unless-stopped
     volumes:
       - ${SERVER_PATH_DATA}/media/other:/downloads
+  yt-dlp:
+    image: nbr23/youtube-dl-server:yt-dlp
+    container_name: yt-dlp
+    restart: unless-stopped
+    volumes:
+      - ${SERVER_PATH_DATA}/media/other:/youtube-dl
+      - ./yt-dlp_config.yaml:/app_config/config.yml:ro
