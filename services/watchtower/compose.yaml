@@ -1,0 +1,18 @@
+---
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
+      - WATCHTOWER_CLEANUP=true            # Remove old images after updating a container
+      - WATCHTOWER_INCLUDE_STOPPED=true    # Also update non-running containers
+      - WATCHTOWER_NOTIFICATIONS=shoutrrr  # WATCHTOWER_NOTIFICATION_URL defined in secrets.env (contains API token)
+      - WATCHTOWER_SCHEDULE=0 30 5 * * *   # Run at 5:30am daily.
+      - WATCHTOWER_TIMEOUT=30s             # Increase timeout before containers are force-stopped (default 10s)
+    env_file:
+      - ./secrets.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

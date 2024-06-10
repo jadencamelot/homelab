@@ -14,6 +14,7 @@ include:
   - path: services/speedtest/compose.yaml
   # - path: services/tailscale/compose.yaml
   # - path: services/unifi/compose.yaml
+  - path: services/watchtower/compose.yaml
 
 # networks:
   # TODO
