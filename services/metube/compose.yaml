@@ -1,0 +1,8 @@
+---
+services:
+  metube:
+    image: ghcr.io/alexta69/metube
+    container_name: metube
+    restart: unless-stopped
+    volumes:
+      - ${SERVER_PATH_DATA}/media/other:/downloads
