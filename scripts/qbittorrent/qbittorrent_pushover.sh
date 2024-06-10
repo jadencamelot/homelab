@@ -74,46 +74,51 @@ readonly torrent_size_h="$(numfmt --to=iec-i "${torrent_size:=0}")"
 readonly torrent_path="${torrent_path_save:-${torrent_path_content:-${torrent_path_root}}}"
 readonly torrent_hash="${torrent_hash_id:-${torrent_hash_v2:-${torrent_hash_v1}}}"
 
-# Construct notification title
+# Construct notification message & title
 case "${action}" in
-  added)    title="⏳ Started Download" ;;
-  finished) title="✅ Download Complete" ;;
+  added)
+    title="New Torrent Added"
+    message="<b>⏳ Downloading</b> ${torrent_name}
+
+<b>Folder:</b> ${torrent_path_save}
+<b>Category:</b> ${torrent_category}
+${torrent_tags:+"(<b>Tags:</b> ${torrent_tags})"}"
+    ;;
+  finished)
+    title="Download Complete"
+    message="<b>✅ Completed</b> ${torrent_name}
+
+<b>Folder:</b> ${torrent_path_content}
+<b>Size:</b> ${torrent_size_h}B (${torrent_numfiles:-??} files)
+<b>Tracker:</b> ${torrent_tracker}
+
+<b>Category:</b> ${torrent_category}
+${torrent_tags:+"(<b>Tags:</b> ${torrent_tags})"}"
+    ;;
   *)
     echo "Invalid action '${action}'. Must specify -a {'added', 'finished'}"
     exit 1
     ;;
 esac
 
-# Construct notification message
-message="${title}
-
-<b>Name:</b> ${torrent_name}
-<b>Size:</b> ${torrent_size_h}B (${torrent_numfiles:-??} files)
-<b>Path:</b> ${torrent_path}
-<b>Tags:</b> ${torrent_tags}
-<b>Category:</b> ${torrent_category}
-<b>Hash:</b> ${torrent_hash}
-<b>Tracker:</b> ${torrent_tracker}
-
-View in:
-  • <a href=https://iqbit.${domain}>iQbit</a>
-  • <a href=https://qbittorrent.${domain}>qBittorrent</a>"
-
 # Escape newlines in message, for logging purposes
 message_escaped=${message//$'\n'/\\n}
 
 # Log message
-echo "Pushing notification.  Message: \"${message}\""
-echo "[$(date)] Pushing notification.  Message: \"${message_escaped}\"" >> ${log_file}
+echo "Pushing notification.  Title: \"${title}\"  Message: \"${message}\""
+echo "[$(date)] Pushing notification.  Title: \"${title}\"  Message: \"${message_escaped}\"" >> ${log_file}
 
 # Send notification via Pushover API.
 #  - Capture curl's output.
 #  - Exclude the download meter with --silent, but include any actual errors
 #      with --show-error, plus redirecting stderr to stdout
 response=$(curl \
+  --form-string "title=${title}" \
   --form-string "message=${message}" \
   --form-string "priority=${message_priority}" \
   --form-string "html=1" \
+  --form-string "url=https://iqbit.${domain}" \
+  --form-string "url_title=Open iQbit" \
   --form-string "user=${pushover_user_key}" \
   --form-string "token=${pushover_api_token}" \
   --silent \
