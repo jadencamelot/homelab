@@ -2,7 +2,7 @@
 name: speedtest
 services:
   speedtest-tracker:
-    image: linuxserver/speedtest-tracker
+    image: linuxserver/speedtest-tracker:latest
     container_name: speedtest-tracker
     restart: unless-stopped
     environment:
@@ -10,7 +10,12 @@ services:
       - PGID=${PGID}
       - TZ=${SERVER_TIMEZONE}
       - DB_CONNECTION=sqlite
+      - DISPLAY_TIMEZONE=${SERVER_TIMEZONE}
+      - PRUNE_RESULTS_OLDER_THAN=365
       - PUBLIC_DASHBOARD=true
+      - SPEEDTEST_SCHEDULE="0 * * * *"
+    env_file:
+      - secrets.env  # Contains APP_KEY which is a required env var
     volumes:
       - ${SERVER_PATH_CONFIG}/speedtest-tracker:/config
 
