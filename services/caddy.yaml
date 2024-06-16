@@ -10,7 +10,8 @@ services:
     container_name: caddy
     restart: unless-stopped
     env_file:
-      - ./secrets/caddy.env
+      - ./secrets/domain.env
+      - ./secrets/caddy.env   # DuckDNS API token, for DNS ACME challenge
     ports:
       - 80:80
       - 443:443

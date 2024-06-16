@@ -10,10 +10,9 @@ services:
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128  # Use GPU for encoding
     environment:
-      - JELLYFIN_PublishedServerUrl=${EXTERNAL_URL_JELLYFIN}
       - TZ=${SERVER_TIMEZONE}
     ports:
-      - "${JELLYFIN_WEBUI_PORT}:8096"
+      - 8096:8096
     volumes:
       - ${SERVER_PATH_CONFIG}/jellyfin/config:/config
       - ${SERVER_PATH_CACHE}/jellyfin:/cache
@@ -28,6 +27,6 @@ services:
     environment:
       - TZ=${SERVER_TIMEZONE}
     ports:
-      - "${JELLYSEERR_WEBUI_PORT}:5055"
+      - 5055:5055
     volumes:
       - ${SERVER_PATH_CONFIG}/jellyseerr:/app/config
