@@ -12,4 +12,4 @@ services:
     restart: unless-stopped
     volumes:
       - ${SERVER_PATH_DATA}/media/other:/youtube-dl
-      - ./yt-dlp_config.yaml:/app_config/config.yml:ro
+      - ./files/yt-dlp_config.yaml:/app_config/config.yml:ro
