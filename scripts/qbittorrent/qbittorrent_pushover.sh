@@ -11,6 +11,7 @@
 # Constants
 readonly log_file='/config/qBittorrent/logs/pushover.log'
 readonly message_priority='-1'  # quiet delivery (no sound)
+readonly message_ttl='345600'   # 4 days, in seconds
 readonly pushover_url='https://api.pushover.net/1/messages.json'
 
 # Read from environment
@@ -40,8 +41,8 @@ while getopts 'a:hC:D:F:G:I:J:K:L:N:R:T:Z:' flag; do
   esac
 done
 
-if [[ -n "${help}" ]]; then
-  echo <<END
+if [[ "${help}" == "true" ]]; then
+  echo "\
 usage: ${0} [-a {added,finished}] [-h] [-v] [-C val] [-D val] [-F val] [-G val] [-I val] [-J val] [-K val] [-L val] [-N val] [-R val] [-T val] [-Z val]
 
 options:
@@ -62,8 +63,7 @@ options:
 
 example usage:
   Using all parameters from qBittorrent:
-    ${0} -a "added" -C "%C" -D "%D" -F "%F" -G "%G" -I "%I" -J "%J" -K "%K" -L "%L" -N "%N" -R "%R" -T "%T" -Z "%Z" 
-END
+    ${0} -a 'added' -C '%C' -D '%D' -F '%F' -G '%G' -I '%I' -J '%J' -K '%K' -L '%L' -N '%N' -R '%R' -T '%T' -Z '%Z' "
   exit 0
 fi
 
@@ -115,6 +115,7 @@ response=$(curl \
   --form-string "title=${title}" \
   --form-string "message=${message}" \
   --form-string "priority=${message_priority}" \
+  --form-string "ttl=${message_ttl}" \
   --form-string "html=1" \
   --form-string "url=https://iqbit.${domain}" \
   --form-string "url_title=Open iQbit" \
