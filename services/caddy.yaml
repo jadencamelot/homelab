@@ -10,12 +10,12 @@ services:
     container_name: caddy
     restart: unless-stopped
     env_file:
-      - ./secrets.env
+      - ./secrets/caddy.env
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./files/Caddyfile:/etc/caddy/Caddyfile:ro
       - ${SERVER_PATH_CONFIG}/caddy/config:/config
       - ${SERVER_PATH_CONFIG}/caddy/data:/data
       - ${SERVER_PATH_CONFIG}/caddy/static:/www:ro

@@ -69,7 +69,7 @@ services:
       - TORRENTING_PORT=6681
       - TZ=${SERVER_TIMEZONE}
     env_file:
-      - ./secrets.env
+      - ./secrets/qbittorrent.env
     ports:
       - "6881:6881/tcp"  # For bittorrent traffic
       - "6881:6881/udp"  # For bittorrent traffic

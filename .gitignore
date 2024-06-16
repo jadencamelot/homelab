@@ -1,2 +1,13 @@
-local.env
-secrets.env
+# Exclude secrets
+services/secrets/*.env
+
+# Exclude local working folder(s)
+backup
+local
+temp
+
+# Exclude local notes
+TODO.md
+
+# VScode
+.vscode

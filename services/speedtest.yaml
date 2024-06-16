@@ -15,7 +15,7 @@ services:
       - PUBLIC_DASHBOARD=true
       - SPEEDTEST_SCHEDULE="0 * * * *"
     env_file:
-      - secrets.env  # Contains APP_KEY which is a required env var
+      - ./secrets/speedtest.env  # Contains APP_KEY which is a required env var
     volumes:
       - ${SERVER_PATH_CONFIG}/speedtest-tracker:/config
 

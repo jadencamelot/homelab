@@ -7,15 +7,15 @@
 ---
 name: homelab
 include:
-  - path: services/caddy/compose.yaml
-  - path: services/downloadarr/compose.yaml
-  - path: services/jellyfin/compose.yaml
-  - path: services/metube/compose.yaml
-  # - path: services/portainer/compose.yaml
-  - path: services/speedtest/compose.yaml
-  # - path: services/tailscale/compose.yaml
-  # - path: services/unifi/compose.yaml
-  - path: services/watchtower/compose.yaml
+  - path: services/caddy.yaml
+  - path: services/downloadarr.yaml
+  - path: services/jellyfin.yaml
+  - path: services/metube.yaml
+  # - path: services/portainer.yaml
+  - path: services/speedtest.yaml
+  # - path: services/tailscale.yaml
+  # - path: services/unifi.yaml
+  - path: services/watchtower.yaml
 
 # networks:
   # TODO
