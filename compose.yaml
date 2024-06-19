@@ -11,7 +11,7 @@ include:
   - path: services/downloadarr.yaml
   - path: services/jellyfin.yaml
   - path: services/metube.yaml
-  # - path: services/portainer.yaml
+  - path: services/portainer.yaml
   - path: services/speedtest.yaml
   # - path: services/tailscale.yaml
   # - path: services/unifi.yaml
