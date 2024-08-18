@@ -36,6 +36,10 @@ jellyseerr.home.arpa {
     reverse_proxy jellyseerr:5055
 }
 
+:80 http://caddy.home.arpa {
+    respond /healthcheck "Healthy" 200
+}
+
 # Must use wildcard certificate for sub-subdomains of DuckDNS, because these
 #   custom subdomains don't have their own DNS record and therefore fail the
 #   ACME DNS-01 challenge
