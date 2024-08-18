@@ -11,19 +11,19 @@ portainer.home.arpa {
 }
 
 prowlarr.home.arpa {
-    reverse_proxy prowlarr:9696
+    reverse_proxy gluetun:9696
 }
 
 radarr.home.arpa {
-    reverse_proxy radarr:7878
+    reverse_proxy gluetun:7878
 }
 
 sonarr.home.arpa {
-    reverse_proxy sonarr:8989
+    reverse_proxy gluetun:8989
 }
 
 qbittorrent.home.arpa {
-    reverse_proxy qbittorrent:8080
+    reverse_proxy gluetun:8080
 }
 
 # Temporarily allow IP:8096 for local network to get around DNS issues on guest network over VPN
@@ -61,11 +61,11 @@ jellyseerr.home.arpa {
 
     reverse_proxy @jellyfin    jellyfin:8096
     reverse_proxy @jellyseerr  jellyseerr:5055
-    reverse_proxy @bazarr      bazarr:6767
-    reverse_proxy @prowlarr    prowlarr:9696
-    reverse_proxy @radarr      radarr:7878
-    reverse_proxy @sonarr      sonarr:8989
-    reverse_proxy @qbittorrent qbittorrent:8080
+    reverse_proxy @bazarr      gluetun:6767
+    reverse_proxy @prowlarr    gluetun:9696
+    reverse_proxy @radarr      gluetun:7878
+    reverse_proxy @sonarr      gluetun:8989
+    reverse_proxy @qbittorrent gluetun:8080
     reverse_proxy @metube      metube:8081
     reverse_proxy @yt-dlp      yt-dlp:8080
 
