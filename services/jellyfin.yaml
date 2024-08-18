@@ -3,10 +3,10 @@ name: jellyfin
 services:
   jellyfin:
     image: jellyfin/jellyfin
-    group_add:
-      - ${GID_RENDER}  # render (on host)
     container_name: jellyfin
     restart: unless-stopped
+    group_add:
+      - ${GID_RENDER}  # render (on host)
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128  # Use GPU for encoding
     environment:
