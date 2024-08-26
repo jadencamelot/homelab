@@ -17,6 +17,6 @@ services:
       - 443:443
     volumes:
       - ./files/Caddyfile:/etc/caddy/Caddyfile:ro
-      - ${SERVER_PATH_CONFIG}/caddy/config:/config
-      - ${SERVER_PATH_CONFIG}/caddy/data:/data
-      - ${SERVER_PATH_CONFIG}/caddy/static:/www:ro
+      - ${SERVER_PATH_APPDATA}/caddy/config:/config
+      - ${SERVER_PATH_APPDATA}/caddy/data:/data
+      - ${SERVER_PATH_APPDATA}/caddy/static:/www:ro

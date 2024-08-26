@@ -17,7 +17,7 @@ services:
     env_file:
       - ./secrets/speedtest.env  # Contains APP_KEY which is a required env var
     volumes:
-      - ${SERVER_PATH_CONFIG}/speedtest-tracker:/config
+      - ${SERVER_PATH_APPDATA}/speedtest-tracker:/config
 
   librespeed:
     container_name: librespeed
@@ -27,4 +27,4 @@ services:
       - MODE=standalone
       - DB_TYPE=sqlite
     volumes:
-      - ${SERVER_PATH_CONFIG}/librespeed:/database
+      - ${SERVER_PATH_APPDATA}/librespeed:/database

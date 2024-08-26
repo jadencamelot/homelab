@@ -14,10 +14,12 @@ services:
     ports:
       - 8096:8096
     volumes:
-      - ${SERVER_PATH_CONFIG}/jellyfin/config:/config
+      - ${SERVER_PATH_APPDATA}/jellyfin:/config
       - ${SERVER_PATH_CACHE}/jellyfin:/cache
+      # Cannot change the media path without losing library metadata, so it's slightly different to
+      # the new structure on disk as seen by other containers - shouldn't be an issue.
       - type: bind
-        source: ${SERVER_PATH_DATA}/media
+        source: ${SERVER_PATH_MEDIA}/library
         target: /data/media
 
   jellyseerr:
@@ -29,4 +31,4 @@ services:
     ports:
       - 5055:5055
     volumes:
-      - ${SERVER_PATH_CONFIG}/jellyseerr:/app/config
+      - ${SERVER_PATH_APPDATA}/jellyseerr:/app/config

@@ -28,9 +28,9 @@ services:
       - ./secrets/domain.env
       - ./secrets/qbittorrent.env  # Pushover API token (unique token for Qbittorrent)
     volumes:
-      - ${SERVER_PATH_CONFIG}/qbittorrent:/config
-      - ${SERVER_PATH_DATA}/torrents:/data/torrents
-      - ${SERVER_PATH_DATA}/media:/data/media
+      - ${SERVER_PATH_APPDATA}/qbittorrent:/config
+      - ${SERVER_PATH_MEDIA}/torrents:/media/torrents
+      - ${SERVER_PATH_MEDIA}/library:/media/library
       - ../scripts/qbittorrent:/scripts:ro
     stop_grace_period: 30m
     tmpfs:
@@ -47,8 +47,8 @@ services:
       - PGID=${PGID}
       - TZ=${SERVER_TIMEZONE}
     volumes:
-      - ${SERVER_PATH_CONFIG}/bazarr:/config
-      - ${SERVER_PATH_DATA}:/data  # Entire data folder
+      - ${SERVER_PATH_APPDATA}/bazarr:/config
+      - ${SERVER_PATH_MEDIA}:/media  # Entire data folder
 
   flaresolverr:
     image: flaresolverr/flaresolverr
@@ -71,7 +71,7 @@ services:
       - PGID=${PGID}
       - TZ=${SERVER_TIMEZONE}
     volumes:
-      - ${SERVER_PATH_CONFIG}/prowlarr:/config
+      - ${SERVER_PATH_APPDATA}/prowlarr:/config
 
   radarr:
     image: linuxserver/radarr
@@ -83,8 +83,8 @@ services:
       - PGID=${PGID}
       - TZ=${SERVER_TIMEZONE}
     volumes:
-      - ${SERVER_PATH_CONFIG}/radarr:/config
-      - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
+      - ${SERVER_PATH_APPDATA}/radarr:/config
+      - ${SERVER_PATH_MEDIA}:/media  # Entire media folder, to allow hardlinks
 
   sonarr:
     image: linuxserver/sonarr
@@ -96,5 +96,5 @@ services:
       - PGID=${PGID}
       - TZ=${SERVER_TIMEZONE}
     volumes:
-      - ${SERVER_PATH_CONFIG}/sonarr:/config
-      - ${SERVER_PATH_DATA}:/data  # Entire data folder, to allow hardlinks
+      - ${SERVER_PATH_APPDATA}/sonarr:/config
+      - ${SERVER_PATH_MEDIA}:/media  # Entire media folder, to allow hardlinks
