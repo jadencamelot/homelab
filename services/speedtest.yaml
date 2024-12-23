@@ -21,9 +21,12 @@ services:
 
   librespeed:
     container_name: librespeed
-    image: ghcr.io/librespeed/speedtest:5.4
+    image: linuxserver/librespeed:latest
     restart: unless-stopped
     environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${SERVER_TIMEZONE}
       - MODE=standalone
       - DB_TYPE=sqlite
     volumes:
