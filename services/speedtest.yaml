@@ -21,7 +21,7 @@ services:
 
   librespeed:
     container_name: librespeed
-    image: ghcr.io/librespeed/speedtest:latest
+    image: ghcr.io/librespeed/speedtest:5.4
     restart: unless-stopped
     environment:
       - MODE=standalone
