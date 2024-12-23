@@ -82,9 +82,11 @@ jellyseerr.home.arpa {
     @librespeed         host speedtest.{$DOMAIN}
     @speedtest-tracker  host speedtest-tracker.{$DOMAIN}
     # @unifi              host unifi.{$DOMAIN}
+    @wg-easy            host wg-easy.{$DOMAIN}
 
     reverse_proxy @librespeed         librespeed:80
     reverse_proxy @speedtest-tracker  speedtest-tracker:80
+    reverse_proxy @wg-easy            wg-easy:51821
     # reverse_proxy @unifi              unifi:80
 
     # Misc services
