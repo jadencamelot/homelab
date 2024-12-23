@@ -9,6 +9,7 @@ name: homelab
 include:
   - path: services/caddy.yaml
   - path: services/downloadarr.yaml
+  - path: services/home-assistant.yaml
   - path: services/jellyfin.yaml
   - path: services/metube.yaml
   - path: services/portainer.yaml

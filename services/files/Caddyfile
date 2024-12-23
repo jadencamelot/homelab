@@ -87,6 +87,11 @@ jellyseerr.home.arpa {
     reverse_proxy @speedtest-tracker  speedtest-tracker:80
     # reverse_proxy @unifi              unifi:80
 
+    # Misc services
+    @home-assistant host home-assistant.{$DOMAIN}
+
+    reverse_proxy @home-assistant home-assistant:8123
+
     # Auto redirect common typos
     @typo_jellyseerr  host jellyseer.{$DOMAIN}
     @typo_qbittorrent host qbitorent.{$DOMAIN} qbitorrent.{$DOMAIN} qbittorent.{$DOMAIN}

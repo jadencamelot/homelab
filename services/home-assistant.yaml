@@ -1,0 +1,15 @@
+---
+services:
+  home-assistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: home-assistant
+    restart: unless-stopped
+    ports:
+      - 8123:8123
+    volumes:
+      - ${SERVER_PATH_APPDATA}/home-assistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      # - /run/dbus:/run/dbus:ro  # For bluetooth
+    
+    # privileged: true
+    # network_mode: host
