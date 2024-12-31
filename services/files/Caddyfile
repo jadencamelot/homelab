@@ -94,6 +94,10 @@ jellyseerr.home.arpa {
 
     reverse_proxy @home-assistant home-assistant:8123
 
+    # Auth-related services
+    @lldap                      host lldap.{$DOMAIN}
+    reverse_proxy @lldap        lldap:17170
+
     # Auto redirect common typos
     @typo_jellyseerr  host jellyseer.{$DOMAIN}
     @typo_qbittorrent host qbitorent.{$DOMAIN} qbitorrent.{$DOMAIN} qbittorent.{$DOMAIN}
