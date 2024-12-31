@@ -7,6 +7,7 @@
 ---
 name: homelab
 include:
+  - path: services/auth.yaml
   - path: services/caddy.yaml
   - path: services/downloadarr.yaml
   - path: services/home-assistant.yaml
