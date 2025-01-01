@@ -2,7 +2,7 @@
 name: downloadarr
 services:
   gluetun:
-    image: qmcgaw/gluetun
+    image: qmcgaw/gluetun:latest
     container_name: gluetun  # TODO - make this non generic to support multiple gluetun instances
     restart: unless-stopped
     cap_add:
@@ -14,6 +14,8 @@ services:
       - UPDATER_PERIOD=24h
     env_file:
       - ./secrets/gluetun.env
+    volumes:
+      - ../scripts/gluetun:/scripts:ro
 
   qbittorrent:
     image: linuxserver/qbittorrent
