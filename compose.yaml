@@ -13,6 +13,7 @@ include:
   - path: services/home-assistant.yaml
   - path: services/jellyfin.yaml
   - path: services/metube.yaml
+  - path: services/open-webui.yaml
   - path: services/portainer.yaml
   - path: services/speedtest.yaml
   # - path: services/tailscale.yaml
