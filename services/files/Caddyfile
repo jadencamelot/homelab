@@ -89,12 +89,42 @@ jellyseerr.home.arpa {
     reverse_proxy @wg-easy            wg-easy:51821
     # reverse_proxy @unifi              unifi:80
 
-    # Misc services
-    @home-assistant host home-assistant.{$DOMAIN}
+    # Local AI
+    # NOTE: Primary host is expected to be offline much of the time, so a robust
+    #       health check + failover is needed
+    @automatic1111  host automatic1111.{$DOMAIN}
+    @ollama         host ollama.{$DOMAIN}
     @open-webui     host open-webui.{$DOMAIN}
 
-    reverse_proxy @home-assistant home-assistant:8123
+    reverse_proxy @automatic1111 {
+        # If primary host is down, use secondary as fallback
+        to  gamingpc:7860 gamingpc-wifi:7860 lunpc:7860 lunpc-wifi:7860
+        lb_policy first
+
+        # Active health check
+        health_uri      /
+        health_interval 30s
+        health_timeout  5s
+        health_status   2xx
+    }
+
+    reverse_proxy @ollama {
+        # If primary host is down, use secondary as fallback
+        to  gamingpc:11434 gamingpc-wifi:11434 jb-air:11434
+        lb_policy first
+
+        # Active health check
+        health_uri      /api/version
+        health_interval 30s
+        health_timeout  5s
+        health_status   2xx
+    }
+
     reverse_proxy @open-webui     open-webui:8080
+
+    # Misc services
+    @home-assistant host home-assistant.{$DOMAIN}
+    reverse_proxy @home-assistant home-assistant:8123
 
     # Auth-related services
     @lldap                      host lldap.{$DOMAIN}
