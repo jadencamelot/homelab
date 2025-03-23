@@ -187,11 +187,39 @@ python3 ~/code/public/AutoASPM/autoaspm.py  # Does not persist between reboots!
 
 ## VM - TrueNAS Scale
 
-**Start/Shutdown Order:** `1` - start first, so the network shares are available when other VMs boot
-**System > Machine**: `q35` - modern option, better for PCIe passthrough
-**System > BIOS**: `SeaBios` - UEFI bootloader does not play nicely with TrueNAS Scale install ISO
-**vCPUs**: `2` - since this VM is dedicated purely to storage (no containers etc)
-**Memory**: `32768 MiB` - half the total system RAM. ZFS rule of thumb is 1GB per 1TB usable storage
+-   **Start/Shutdown Order:** `1` - start first, so the network shares are available when other VMs boot
+-   **System > Machine**: `q35` - modern option, better for PCIe passthrough
+-   **System > BIOS**: `SeaBios` - UEFI bootloader does not play nicely with TrueNAS Scale install ISO
+-   **Disks**: 32GB, enable SSD emulation. Data disks passed through separately as PCIe devices
+-   **vCPUs**: `2 cores` - don't need many, since this VM is dedicated purely to storage (no containers etc)
+-   **Memory**: `32768 MiB` - half the total system RAM. ZFS rule of thumb is 1GB per 1TB usable storage
 
 TODO: Set up hugepages
+
+### PCIe Passthrough
+
+Determining which PCIe devices to pass through for storage drives:
+
+```bash
+# List all storage block devices on Proxmox
+lsblk
+
+# List the PCIe device associated with storage 
+readlink -f /sys/block/nvme*n1/device  # NVMe devices (nvme0n1, nvme1n1, ...)
+readlink -f /sys/block/sd*/device      # SATA devices (sda, sdb, ...)
+
+# List the PCIe devices themselves
+lspci
+```
+
+In my case, I wanted to pass through:
+
+-   the NVMe controller for `nvme1n1`, which corresponded to PCIe `2:00.0)
+-   the whole SATA controller (for all four of `sda`/`sdb`/`sdc`/`sdd`),
+    which corresponded to PCIe `00:17.0`)
+
+Therefore, after finishing the VM creation wizard, add two PCI devices to the VM:
+
+-   Raw device -> 0000:02:00.0 (tick PCI Express, leave ROM BAR ticked)
+-   Raw device -> 0000:00:17.0 (tick PCI Express, leave ROM BAR ticked)
 
