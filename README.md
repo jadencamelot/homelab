@@ -23,13 +23,13 @@ Configuration and personal documentation for my homelab - (eternal) WIP
 In no particular order:
 
 - [x] Auto provision TLS certificates via Caddy
-- [ ] Close off container ports (i.e. web UIs only accessible via Caddy)
+- [x] Close off container ports (i.e. web UIs only accessible via Caddy)
 - [x] Expose containers to Tailnet. ✅ Single Tailscale instance for whole cluster (~~ports~~ **subdomains** for different services) ~~or one per service (allows subdomains)~~
-- [ ] Gluetun in containers (currently done at pfsense layer)
-- [ ] Figure out something for NAS layer
+- [x] Gluetun in containers (currently done at pfsense layer)
+- [x] Figure out something for NAS layer
 - [x] PCIe passthrough iGPU from Proxmox Host -> Ubuntu -> Jellyfin container, for transcoding
 - [ ] Move to NixOS instead of Ubuntu
-- [ ] Add more RAM to host PC
+- [x] Add more RAM to host PC
 - [ ] Set up auto offsite backups
 - [ ] Automate deployment from scratch (Ansible? Nix?)
 - [x] Add automated speed test tool (for periodically testing WAN speed through ISP)
