@@ -196,6 +196,13 @@ python3 ~/code/public/AutoASPM/autoaspm.py  # Does not persist between reboots!
 
 TODO: Set up hugepages
 
+**IMPORTANT:** _Remember to set a static IP in pfSense BEFORE booting the VM for the first time._
+Why? TrueNAS seems to stubbornly remember the first DHCP address it's given at install time. Even if
+you give it a different static DHCP reservation later - and even long after the original lease has
+expired! - it doesn't seem to switch to the new IP address. I haven't done enough troubleshooting as
+to why, so I just gave up and manually set a static IP to match the new DHCP reservation in pfSense,
+although this isn't really ideal.
+
 ### PCIe Passthrough
 
 Determining which PCIe devices to pass through for storage drives:
@@ -223,3 +230,20 @@ Therefore, after finishing the VM creation wizard, add two PCI devices to the VM
 -   Raw device -> 0000:02:00.0 (tick PCI Express, leave ROM BAR ticked)
 -   Raw device -> 0000:00:17.0 (tick PCI Express, leave ROM BAR ticked)
 
+### TrueNAS Configuration
+
+1. Create pool and vdevs
+    -   I'm using 4 drives, and decided on a mirrored vdev setup (RAID 10) to maximise IOPS
+    -   I deliberately purchased 2 WD and 2 Seagate drives, to reduce the risk of simultaneous drive
+        failure within the same mirrored pair.
+    -   Automatic drive detection paired the 2x WD together and the 2x Seagate together, so I had to
+        manually select them (drag and drop UI) to override it and ensure the brands were mixed
+        within each vdev.
+2. Create users & groups
+    -   Start with groups. Create as necessary.
+    -   Then create users and assign them to the appropriate groups.
+3. Create datasets and SMB shares
+    -   Create a dataset within the pool. Use the preset config for "SMB Shares".
+    -   **Note:** _For my `media` dataset, since it's exclusively large files, I set the record size to 1MiB._
+        _The rest I left at the default 128KiB._
+    -   Leave "Create SMB share" ticked, to automatically create an SMB share for each dataset.
