@@ -247,3 +247,23 @@ Therefore, after finishing the VM creation wizard, add two PCI devices to the VM
     -   **Note:** _For my `media` dataset, since it's exclusively large files, I set the record size to 1MiB._
         _The rest I left at the default 128KiB._
     -   Leave "Create SMB share" ticked, to automatically create an SMB share for each dataset.
+
+### Time Machine Shares (macOS clients)
+
+On TrueNAS, create a dedicated dataset for each Time Machine device to be backed up.
+
+Follow the TrueNAS docs on [creating a Time Machine share](https://www.truenas.com/docs/scale/scaletutorials/shares/smb/setupbasictimemachinesmbshare).
+In particular, pay attention to:
+
+1.  Once the share is created, go to Shares > Windows (SMB) Shares > the share you created > Edit.
+    Change the **Purpose** field to "Basic time machine share."
+2.  Go to Shares > Windows (SMB) Shares > ... > Config Service > Advanced Settings and ensure that
+    "Enable Apple SMB2/3 Protocol Extensions" is ticked.
+    **Note:** _this option is global for ALL SMB shares.
+
+On MacOS, to enable auto-mount on login:
+([source](https://dannyeckes.com/2024/01/03/macos-connect-to-smb-shares-on-startup/))
+
+-   Connect to the smb share: Go > Connect to Server
+-   Drag the mounted share to Login Items: Settings > General > Login Items
+
