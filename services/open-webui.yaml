@@ -5,4 +5,6 @@ services:
     container_name: open-webui
     restart: unless-stopped
     volumes:
-      - ${SERVER_PATH_APPDATA}/open-webui:/app/backend/data
+      # Temp workaround - doesn't seem to play nice with network shares
+      - /home/jaden/appdata/open-webui:/app/backend/data
+      # - ${SERVER_PATH_APPDATA}/open-webui:/app/backend/data
