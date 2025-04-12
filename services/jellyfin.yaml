@@ -5,6 +5,7 @@ services:
     image: jellyfin/jellyfin
     container_name: jellyfin
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     group_add:
       - ${GID_RENDER}  # render (on host)
     devices:
@@ -18,14 +19,13 @@ services:
       - ${SERVER_PATH_CACHE}/jellyfin:/cache
       # Cannot change the media path without losing library metadata, so it's slightly different to
       # the new structure on disk as seen by other containers - shouldn't be an issue.
-      - type: bind
-        source: ${SERVER_PATH_MEDIA}/library
-        target: /data/media
+      - ${SERVER_PATH_MEDIA}/library:/data/media
 
   jellyseerr:
     image: fallenbagel/jellyseerr
     container_name: jellyseerr
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     environment:
       - TZ=${SERVER_TIMEZONE}
     ports:
