@@ -224,8 +224,10 @@ def fetch_season_poster(info: F1FileInfo, dest_folder: Path, dry_run: bool = Fal
     season_folder = dest_folder / info.parent_folder
     poster_path = season_folder / "poster.webp"
 
-    if poster_path.exists():
-        # print(f"[SKIP] Poster already exists: {poster_path}")
+    # Check if a valid poster file exists already
+    # If the file size is too small, assume that it's not a valid image
+    min_size = 10 * 1024  # 10 KiB
+    if poster_path.exists() and poster_path.stat().st_size > min_size:
         return
 
     base_url = "https://www.eventartworks.de"
@@ -269,14 +271,18 @@ def fetch_season_poster(info: F1FileInfo, dest_folder: Path, dry_run: bool = Fal
 
     # Download the poster
     try:
-        r = requests.get(url, timeout=15)
-        r.raise_for_status()
+        response = requests.get(url, timeout=15, allow_redirects=False)
+        response.raise_for_status()
+        if 300 <= response.status_code < 400:
+            raise requests.RequestException(
+                f"Redirect to {response.headers['location']}"
+            )
     except requests.RequestException as e:
         print(f"[ERROR] Could not download poster from {url}: {e}")
         return
 
     with open(poster_path, "wb") as f:
-        for chunk in r.iter_content(8192):
+        for chunk in response.iter_content(8192):
             f.write(chunk)
 
     print(f"[POSTER] Downloaded: {poster_path}")
