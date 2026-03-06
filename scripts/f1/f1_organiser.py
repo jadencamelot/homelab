@@ -48,7 +48,11 @@ class F1FileInfo:
         return any(x in self.session.lower() for x in ["press", "conference", "interview"])
 
     @property
-    def parent_folder(self) -> str:
+    def year_folder(self) -> str:
+        return f"Formula One ({self.year:04d})"
+
+    @property
+    def round_folder(self) -> str:
         return f"Season {self.round_no:02d} - {self.name}"
 
     @property
@@ -66,7 +70,7 @@ class F1FileInfo:
 
     @property
     def formatted_path(self) -> Path:
-        parts = [self.parent_folder]
+        parts = [self.year_folder, self.round_folder]
         if self.subfolder:
             parts.append(self.subfolder)
         parts.append(self.new_filename)
@@ -87,14 +91,14 @@ def parse_filename(filepath: Path) -> list[str]:
     return m.groupdict()
 
 
-def parse_parent_folder_name(filepath: Path) -> list[str]:
-    parent_folder = Path(filepath).parent.name
+def parse_round_folder_name(filepath: Path) -> list[str]:
+    round_folder = Path(filepath).parent.name
     pattern = re.compile(
         r'^F1\.(?P<year>\d{4})\.(?P<round>R\d{2})\.(?P<body>.+?)\.SkyF1HD\.1080P',
         re.IGNORECASE
     )
 
-    m = pattern.search(parent_folder)
+    m = pattern.search(round_folder)
     if not m:
         return None
 
@@ -103,7 +107,7 @@ def parse_parent_folder_name(filepath: Path) -> list[str]:
 
 def get_f1_file_info(filepath: str | Path) -> F1FileInfo | None:
     info = parse_filename(filepath)
-    parent_info = parse_parent_folder_name(filepath)
+    parent_info = parse_round_folder_name(filepath)
 
     if not info or not parent_info:
         return None
@@ -221,7 +225,7 @@ def fetch_season_poster(info: F1FileInfo, dest_folder: Path, dry_run: bool = Fal
     Fetch the race poster for a GP season from eventartworks.de and save it as poster.webp
     in the season folder.
     """
-    season_folder = dest_folder / info.parent_folder
+    season_folder = dest_folder / info.round_folder
     poster_path = season_folder / "poster.webp"
 
     # Check if a valid poster file exists already
@@ -232,37 +236,65 @@ def fetch_season_poster(info: F1FileInfo, dest_folder: Path, dry_run: bool = Fal
 
     base_url = "https://www.eventartworks.de"
     poster_url_map = {
-        1: "images/f1@1200/2025-03-16-melbourne.webp",
-        2: "images/f1@1200/2025-03-23-shanghai.webp",
-        3: "images/f1@1200/2025-04-06-suzuka.webp",
-        4: "images/f1@1200/2025-04-13-sakhir.webp",
-        5: "images/f1@1200/2025-04-20-jeddah.webp",
-        6: "images/f1@1200/2025-05-04-miami.webp",
-        7: "images/f1@1200/2025-05-18-imola.webp",
-        8: "images/f1@1200/2025-05-25-montecarlo.webp",
-        9: "images/f1@1200/2025-06-01-barcelona.webp",
-        10: "images/f1@1200/2025-06-15-montreal.webp",
-        11: "images/f1@1200/2025-06-29-spielberg.webp",
-        12: "images/f1@1200/2025-07-06-silverstone.webp",
-        13: "images/f1@1200/2025-07-27-spa-francorchamps.webp",
-        14: "images/f1@1200/2025-08-03-budapest.webp",
-        15: "images/f1@1200/2025-08-31-zandvoort.webp",
-        16: "images/f1@1200/2025-09-07-monza.webp",
-        17: "images/f1@1200/2025-09-21-baku.webp",
-        18: "images/f1@1200/2025-10-05-singapore.webp",
-        19: "images/f1@1200/2025-10-19-austin.webp",
-        20: "images/f1@1200/2025-10-26-mexico.webp",
-        21: "images/f1@1200/2025-11-09-interlagos.webp",
-        22: "images/f1@1200/2025-11-22-lasvegas.webp",
-        23: "images/f1@1200/2025-11-30-lusail.webp",
-        24: "images/f1@1200/2025-12-07-abudhabi.webp",
+        2025: {
+            1: "images/f1@1200/2025-03-16-melbourne.webp",
+            2: "images/f1@1200/2025-03-23-shanghai.webp",
+            3: "images/f1@1200/2025-04-06-suzuka.webp",
+            4: "images/f1@1200/2025-04-13-sakhir.webp",
+            5: "images/f1@1200/2025-04-20-jeddah.webp",
+            6: "images/f1@1200/2025-05-04-miami.webp",
+            7: "images/f1@1200/2025-05-18-imola.webp",
+            8: "images/f1@1200/2025-05-25-montecarlo.webp",
+            9: "images/f1@1200/2025-06-01-barcelona.webp",
+            10: "images/f1@1200/2025-06-15-montreal.webp",
+            11: "images/f1@1200/2025-06-29-spielberg.webp",
+            12: "images/f1@1200/2025-07-06-silverstone.webp",
+            13: "images/f1@1200/2025-07-27-spa-francorchamps.webp",
+            14: "images/f1@1200/2025-08-03-budapest.webp",
+            15: "images/f1@1200/2025-08-31-zandvoort.webp",
+            16: "images/f1@1200/2025-09-07-monza.webp",
+            17: "images/f1@1200/2025-09-21-baku.webp",
+            18: "images/f1@1200/2025-10-05-singapore.webp",
+            19: "images/f1@1200/2025-10-19-austin.webp",
+            20: "images/f1@1200/2025-10-26-mexico.webp",
+            21: "images/f1@1200/2025-11-09-interlagos.webp",
+            22: "images/f1@1200/2025-11-22-lasvegas.webp",
+            23: "images/f1@1200/2025-11-30-lusail.webp",
+            24: "images/f1@1200/2025-12-07-abudhabi.webp",
+        },
+        2026: {
+            1: "images/f1@1200/2026-03-08-melbourne.webp",
+            2: "images/f1@1200/2026-03-15-shanghai.webp",
+            3: "images/f1@1200/2026-03-29-suzuka.webp",
+            4: "images/f1@1200/2026-04-12-sakhir.webp",
+            5: "images/f1@1200/2026-04-19-jeddah.webp",
+            6: "images/f1@1200/2026-05-03-miami.webp",
+            7: "images/f1@1200/2026-05-24-montreal.webp",
+            8: "images/f1@1200/2026-06-07-montecarlo.webp",
+            9: "images/f1@1200/2026-06-14-barcelona.webp",
+            10: "images/f1@1200/2026-06-28-spielberg.webp",
+            11: "images/f1@1200/2026-07-05-silverstone.webp",
+            12: "images/f1@1200/2026-07-19-spa-francorchamps.webp",
+            13: "images/f1@1200/2026-07-26-budapest.webp",
+            14: "images/f1@1200/2026-08-23-zandvoort.webp",
+            15: "images/f1@1200/2026-09-06-monza.webp",
+            16: "images/f1@1200/2026-09-13-madrid.webp",
+            17: "images/f1@1200/2026-09-26-baku.webp",
+            18: "images/f1@1200/2026-10-11-singapore.webp",
+            19: "images/f1@1200/2026-10-25-austin.webp",
+            20: "images/f1@1200/2026-11-01-mexico.webp",
+            21: "images/f1@1200/2026-11-08-interlagos.webp",
+            22: "images/f1@1200/2026-11-21-lasvegas.webp",
+            23: "images/f1@1200/2026-11-29-lusail.webp",
+            24: "images/f1@1200/2026-12-06-abudhabi.webp",
+        },
     }
 
-    if info.round_no not in poster_url_map:
+    if not (poster_url := poster_url_map.get(info.year, {}).get(info.round_no)):
         print(f"[WARN] No poster found for round {info.round_no}")
         return
 
-    url = f"{base_url}/{poster_url_map[info.round_no]}"
+    url = f"{base_url}/{poster_url}"
 
     if dry_run:
         print(f"[DRY-RUN] Would fetch poster: {url}\n"
@@ -331,7 +363,7 @@ def write_nfo_for_season(info: F1FileInfo, dest_folder: Path, dry_run: bool = Fa
     Generate a season-level NFO for Jellyfin. This describes the whole GP round.
     The NFO goes in the season folder (parent folder of episodes).
     """
-    season_folder = dest_folder / info.parent_folder
+    season_folder = dest_folder / info.round_folder
     nfo_path = season_folder / "season.nfo"
 
     season_title = f"{info.round_no}. {info.name.replace('Grand Prix', 'GP')}"
@@ -390,8 +422,6 @@ def process_file(file_path: Path, output_root: Path, round_no: int | None = None
     if info.episode:
         fetch_thumbnail_for_episode(info, dest_path.parent, dry_run)
         write_nfo_for_episode(info, dest_path.parent, dry_run)
-        season_folder = dest_path.parent
-        write_nfo_for_season(info, dest_path.parent.parent, dry_run)
 
     # Create season.nfo and fetch season poster
     season_folder = dest_path.parent.parent if info.episode else dest_path.parent.parent.parent
