@@ -22,6 +22,7 @@ class F1FileInfo:
     def episode(self) -> int:
         mapping = {
             # Practice
+            "practice": 1,       # Sprint weekends only
             "free practice": 1,  # Sprint weekends only
             "free practice one": 1,
             "free practice two": 2,
